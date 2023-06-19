@@ -72,5 +72,19 @@ namespace WhiteLagoon.Web.Controllers
             }
             return View(villaNumberVM);
         }
+
+        [HttpPost]
+        public IActionResult Update(VillaNumberVM villaNumberVM)
+        {
+            ModelState.Remove("VillaNumber.Villa");
+            if (ModelState.IsValid)
+            {
+                _context.VillaNumbers.Update(villaNumberVM.VillaNumber);
+                _context.SaveChanges();
+                TempData["success"] = "Villa Number Successfully";
+                return RedirectToAction(nameof(Index));
+            }
+            return View(villaNumberVM);
+        }
     }
 }
