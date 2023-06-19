@@ -25,6 +25,7 @@ namespace WhiteLagoon.Web.Controllers
 
         public IActionResult Error()
         {
+            //https://localhost:7052/Villa/Update?villaId=10 this will not work
             return View();
         }
     }
