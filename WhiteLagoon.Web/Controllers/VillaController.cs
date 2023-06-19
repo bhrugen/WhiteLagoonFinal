@@ -27,7 +27,7 @@ namespace WhiteLagoon.Web.Controllers
         {
             if (obj.Name == obj.Description?.ToString())
             {
-                ModelState.AddModelError("", "The description cannot exactly match the Name.");
+                ModelState.AddModelError("name", "The description cannot exactly match the Name.");
             }
             if (ModelState.IsValid)
             {
