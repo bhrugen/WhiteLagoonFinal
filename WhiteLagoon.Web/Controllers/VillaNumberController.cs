@@ -19,7 +19,7 @@ namespace WhiteLagoon.Web.Controllers
         }
         public IActionResult Create()
         {
-            ViewData["VillaList"] = _context.Villas.ToList().Select(u => new SelectListItem
+            ViewBag.VillaList = _context.Villas.ToList().Select(u => new SelectListItem
             {
                 Text = u.Name,
                 Value = u.Id.ToString()
