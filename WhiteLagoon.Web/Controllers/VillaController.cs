@@ -16,5 +16,10 @@ namespace WhiteLagoon.Web.Controllers
             IEnumerable<Villa> villaList = _context.Villas;
             return View(villaList);
         }
+
+        public IActionResult Create()
+        {
+            return View();
+        }
     }
 }
