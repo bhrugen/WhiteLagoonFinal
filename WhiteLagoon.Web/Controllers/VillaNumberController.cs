@@ -104,5 +104,19 @@ namespace WhiteLagoon.Web.Controllers
             }
             return View(villaNumberVM);
         }
+
+        [HttpPost]
+        public IActionResult Delete(VillaNumberVM villaNumberVM)
+        {
+                VillaNumber? objFromDb = _context.VillaNumbers.FirstOrDefault(x => x.Villa_Number == villaNumberVM.VillaNumber.Villa_Number);
+                if (objFromDb != null)
+                {
+                    _context.VillaNumbers.Remove(objFromDb);
+                    _context.SaveChanges();
+                    TempData["success"] = "Villa Number Deleted Successfully";
+                    return RedirectToAction(nameof(Index));
+                }
+            return View(villaNumberVM);
+        }
     }
 }
