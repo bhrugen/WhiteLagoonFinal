@@ -28,11 +28,13 @@ namespace WhiteLagoon.Web.Controllers
             if (obj.Name == obj.Description?.ToString())
             {
                 ModelState.AddModelError("name", "The description cannot exactly match the Name.");
+                TempData["error"] = "Error encountered";
             }
             if (ModelState.IsValid)
             {
                 _context.Villas.Add(obj);
                 _context.SaveChanges();
+                TempData["success"] = "Villa Created Successfully";
                 return RedirectToAction("Index");
             }
             return View(obj);
