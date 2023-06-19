@@ -35,7 +35,7 @@ namespace WhiteLagoon.Web.Controllers
         public IActionResult Create(VillaNumberVM villaNumberVM)
         {
             //Remove some validations
-            ModelState.Remove("Villa");
+            ModelState.Remove("VillaNumber.Villa");
             if (ModelState.IsValid)
             {
                 _context.VillaNumbers.Add(villaNumberVM.VillaNumber);
