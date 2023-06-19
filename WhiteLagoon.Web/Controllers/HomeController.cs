@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
-using WhiteLagoon.Web.Models;
 
 namespace WhiteLagoon.Web.Controllers
 {

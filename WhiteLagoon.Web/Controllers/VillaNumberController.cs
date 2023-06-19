@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc.Rendering;
 using WhiteLagoon.Domain.Entities;
 using WhiteLagoon.Infrastructure.Data;
+using WhiteLagoon.Web.ViewModels;
 
 namespace WhiteLagoon.Web.Controllers
 {
@@ -19,27 +20,30 @@ namespace WhiteLagoon.Web.Controllers
         }
         public IActionResult Create()
         {
-            ViewBag.VillaList = _context.Villas.ToList().Select(u => new SelectListItem
+            VillaNumberVM villaNumberVM = new()
             {
-                Text = u.Name,
-                Value = u.Id.ToString()
-            });
-            return View();
+                VillaList = _context.Villas.ToList().Select(u => new SelectListItem
+                {
+                    Text = u.Name,
+                    Value = u.Id.ToString()
+                })
+            };
+            return View(villaNumberVM);
         }
 
         [HttpPost]
-        public IActionResult Create(VillaNumber villaNumber)
+        public IActionResult Create(VillaNumberVM villaNumberVM)
         {
             //Remove some validations
             ModelState.Remove("Villa");
             if (ModelState.IsValid)
             {
-                _context.VillaNumbers.Add(villaNumber);
+                _context.VillaNumbers.Add(villaNumberVM.VillaNumber);
                 _context.SaveChanges();
                 TempData["success"] = "Villa Number Successfully";
                 return RedirectToAction(nameof(Index));
             }
-            return View(villaNumber);
+            return View(villaNumberVM);
         }
     }
 }
