@@ -24,6 +24,8 @@ namespace WhiteLagoon.Web.Controllers
         [HttpPost]
         public IActionResult Create(VillaNumber villaNumber)
         {
+            //Remove some validations
+            ModelState.Remove("Villa");
             if (ModelState.IsValid)
             {
                 _context.VillaNumbers.Add(villaNumber);
