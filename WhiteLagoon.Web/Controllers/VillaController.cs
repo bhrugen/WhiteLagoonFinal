@@ -57,6 +57,7 @@ namespace WhiteLagoon.Web.Controllers
             {
                 _context.Villas.Update(obj);
                 _context.SaveChanges();
+                TempData["success"] = "Villa Updated Successfully";
                 return RedirectToAction("Index");
             }
             return View(obj);
@@ -80,6 +81,7 @@ namespace WhiteLagoon.Web.Controllers
             {
                 _context.Villas.Remove(objFromDb);
                 _context.SaveChanges();
+                TempData["success"] = "Villa Deleted Successfully";
                 return RedirectToAction("Index");
             }
             return View(obj);
