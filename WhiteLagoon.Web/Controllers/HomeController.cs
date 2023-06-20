@@ -15,7 +15,7 @@ namespace WhiteLagoon.Web.Controllers
         }
         public IActionResult Index()
         {
-            HomeVM homeVM = new HomeVM()
+            HomeVM homeVM = new ()
             {
                 VillaList = _unitOfWork.Villa.GetAll(includeProperties: "VillaAmenity").ToList(),
                 Nights = 1
