@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using WhiteLagoon.Application.Common.Interfaces;
 using WhiteLagoon.Domain.Entities;
 using WhiteLagoon.Web.ViewModels;
@@ -33,6 +34,14 @@ namespace WhiteLagoon.Web.Controllers
             };
 
             return View(loginVM);
+        }
+
+        public IActionResult Register()
+        {
+
+            RegisterVM registerVM = new();
+           
+            return View(registerVM);
         }
     }
 }
