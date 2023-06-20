@@ -44,7 +44,14 @@ namespace WhiteLagoon.Web.Controllers
                 _roleManager.CreateAsync(new IdentityRole(SD.Role_Admin)).GetAwaiter().GetResult();
                 _roleManager.CreateAsync(new IdentityRole(SD.Role_Customer)).GetAwaiter().GetResult();
             }
-            RegisterVM registerVM = new();
+            RegisterVM registerVM = new()
+            {
+                RoleList = _roleManager.Roles.Select(x => x.Name).Select(i => new SelectListItem
+                {
+                    Text = i,
+                    Value = i
+                })
+            };
            
             return View(registerVM);
         }
