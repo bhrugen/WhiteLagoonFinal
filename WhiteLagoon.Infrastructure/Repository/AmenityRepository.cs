@@ -22,7 +22,7 @@ namespace WhiteLagoon.Infrastructure.Repository
 
         public void Update(Amenity entity)
         {
-            _db.Villas.Update(entity);
+            _db.Amenities.Update(entity);
         }
     }
 }
