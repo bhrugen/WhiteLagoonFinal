@@ -4,6 +4,7 @@ namespace WhiteLagoon.Web.ViewModels
 {
     public class LoginVM
     {
+
         [Display(Name = "Email")]
         public string Email { get; set; }
 
