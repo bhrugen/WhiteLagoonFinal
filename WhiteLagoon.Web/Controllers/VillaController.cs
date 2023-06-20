@@ -88,6 +88,30 @@ namespace WhiteLagoon.Web.Controllers
         {
             if (ModelState.IsValid && obj.Id > 0)
             {
+                if (obj.Image != null)
+                {
+                    string fileName = Guid.NewGuid().ToString() + Path.GetExtension(obj.Image.FileName);
+                    string productPath = Path.Combine(_webHostEnvironment.WebRootPath, @"images\products");
+
+                    if (!string.IsNullOrEmpty(obj.ImageUrl))
+                    {
+                        //delete the old image
+                        var oldImagePath =
+                            Path.Combine(_webHostEnvironment.WebRootPath, obj.ImageUrl.TrimStart('\\'));
+
+                        if (System.IO.File.Exists(oldImagePath))
+                        {
+                            System.IO.File.Delete(oldImagePath);
+                        }
+                    }
+
+                    using (var fileStream = new FileStream(Path.Combine(productPath, fileName), FileMode.Create))
+                    {
+                        obj.Image.CopyTo(fileStream);
+                    }
+
+                    obj.ImageUrl = @"\images\products\" + fileName;
+                }
                 _unitOfWork.Villa.Update(obj);
                 _unitOfWork.Save();
                 TempData["success"] = "Villa Updated Successfully";
