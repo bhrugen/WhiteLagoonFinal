@@ -11,7 +11,7 @@
     <div class="card-body border p-4">
         <form method="post" class="row">
             <input asp-for="Id" hidden />
-
+            <div class="col-10">
             <div class=" p-3">
                 <div class="form-floating py-1 col-12">
                     <input asp-for="Name" disabled class="form-control border shadow" />
@@ -33,10 +33,7 @@
                     <input asp-for="Occupancy" disabled class="form-control border shadow" />
                     <label asp-for="Occupancy" class="ms-2"></label>
                 </div>
-                <div class="form-floating py-1 col-12">
-                    <input asp-for="ImageUrl" disabled class="form-control border shadow" />
-                    <label asp-for="ImageUrl" class="ms-2"></label>
-                </div>
+              
                 <div class="row pt-2">
                     <div class="col-6 col-md-3">
                         <button type="submit" class="btn btn-danger form-control">Delete</button>
@@ -46,6 +43,13 @@
                             Back to List
                         </a>
                     </div>
+                </div>
+            </div>
+            </div>
+            <div class="col-2">
+                <div class=" pt-3">
+                    <img src="@Model.ImageUrl" width="100%"
+                         style="border-radius:5px; border:1px solid #bbb9b9" />
                 </div>
             </div>
         </form>

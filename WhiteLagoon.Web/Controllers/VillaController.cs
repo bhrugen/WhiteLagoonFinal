@@ -136,6 +136,17 @@ namespace WhiteLagoon.Web.Controllers
             Villa? objFromDb = _unitOfWork.Villa.Get(x => x.Id == obj.Id);
             if (objFromDb != null)
             {
+                if (!string.IsNullOrEmpty(objFromDb.ImageUrl))
+                {
+                    var oldImagePath =
+                           Path.Combine(_webHostEnvironment.WebRootPath, objFromDb.ImageUrl.TrimStart('\\'));
+                    FileInfo file = new(oldImagePath);
+
+                    if (file.Exists)
+                    {
+                        file.Delete();
+                    }
+                }
                 _unitOfWork.Villa.Remove(objFromDb);
                 _unitOfWork.Save();
                 TempData["success"] = "Villa Deleted Successfully";
