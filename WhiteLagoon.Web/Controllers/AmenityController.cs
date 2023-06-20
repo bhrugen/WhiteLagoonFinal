@@ -43,7 +43,7 @@ namespace WhiteLagoon.Web.Controllers
             {
                 _unitOfWork.Amenity.Add(AmenityVM.Amenity);
                 _unitOfWork.Save();
-                TempData["success"] = "Villa Number Successfully";
+                TempData["success"] = "Amenity created Successfully";
                 return RedirectToAction(nameof(Index));
             }
             return View(AmenityVM);
@@ -75,7 +75,7 @@ namespace WhiteLagoon.Web.Controllers
             {
                 _unitOfWork.Amenity.Update(AmenityVM.Amenity);
                 _unitOfWork.Save();
-                TempData["success"] = "Villa Number Successfully";
+                TempData["success"] = "Amenity updated Successfully";
                 return RedirectToAction(nameof(Index));
             }
             return View(AmenityVM);
@@ -107,7 +107,7 @@ namespace WhiteLagoon.Web.Controllers
             {
                 _unitOfWork.Amenity.Remove(objFromDb);
                 _unitOfWork.Save();
-                TempData["success"] = "Villa Number Deleted Successfully";
+                TempData["success"] = "Amenity Deleted Successfully";
                 return RedirectToAction(nameof(Index));
             }
             return View(AmenityVM);
