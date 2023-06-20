@@ -9,10 +9,13 @@ namespace WhiteLagoon.Web.Controllers
     public class VillaController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
-        public VillaController(IUnitOfWork unitOfWork)
+        private readonly IWebHostEnvironment _webHostEnvironment;
+        public VillaController(IUnitOfWork unitOfWork, IWebHostEnvironment webHostEnvironment)
         {
             _unitOfWork = unitOfWork;
+            _webHostEnvironment = webHostEnvironment;
         }
+
         public IActionResult Index()
         {
             IEnumerable<Villa> villaList = _unitOfWork.Villa.GetAll();
@@ -34,6 +37,34 @@ namespace WhiteLagoon.Web.Controllers
             }
             if (ModelState.IsValid)
             {
+                if (obj.Image != null)
+                {
+                    string fileName = Guid.NewGuid().ToString() + Path.GetExtension(obj.Image.FileName);
+                    string productPath = Path.Combine(_webHostEnvironment.WebRootPath, @"images\products");
+
+                    if (!string.IsNullOrEmpty(obj.ImageUrl))
+                    {
+                        //delete the old image
+                        var oldImagePath =
+                            Path.Combine(_webHostEnvironment.WebRootPath, obj.ImageUrl.TrimStart('\\'));
+
+                        if (System.IO.File.Exists(oldImagePath))
+                        {
+                            System.IO.File.Delete(oldImagePath);
+                        }
+                    }
+
+                    using (var fileStream = new FileStream(Path.Combine(productPath, fileName), FileMode.Create))
+                    {
+                        obj.Image.CopyTo(fileStream);
+                    }
+
+                    obj.ImageUrl = @"\images\products\" + fileName;
+                }
+                else
+                {
+                    obj.ImageUrl = "https://placehold.co/600x400";
+                }
                 _unitOfWork.Villa.Add(obj);
                 _unitOfWork.Save();
                 TempData["success"] = "Villa Created Successfully";
