@@ -12,13 +12,13 @@
         <form method="post" class="row">
             <input asp-for="VillaNumber.Villa_Number" hidden />
             <div class=" p-3">
-                <div class="form-floating py-1 col-12">
+                <div class="form-floating py-2 col-12">
                     <select asp-for="@Model.VillaNumber.VillaId" disabled asp-items="@Model.VillaList" class="form-select border shadow">
                     </select>
                     <label asp-for="VillaNumber.VillaId" class="ms-2"></label>
                     <span asp-validation-for="VillaNumber.VillaId" class="text-danger"></span>
                 </div>
-                <div class="form-floating py-1 col-12">
+                <div class="form-floating py-2 col-12">
                     <input asp-for="VillaNumber.Villa_Number" readonly class="form-control border shadow" />
                     <label asp-for="VillaNumber.Villa_Number" class="ms-2"></label>
                     <span asp-validation-for="VillaNumber.Villa_Number" class="text-danger"></span>
