@@ -14,6 +14,7 @@ namespace WhiteLagoon.Web.Controllers
             _unitOfWork = unitOfWork;
         }
         [Authorize]
+        //INSTALL JSDELIVER add client side and search for jquery-ajax-unobtrusive@3.2.6
         //show if only admin were allowed then this will not work and go to access denided
         //[Authorize(Roles =SD.Role_Admin)]
         public IActionResult FinalizeBooking()
