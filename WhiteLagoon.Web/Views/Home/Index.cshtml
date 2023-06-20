@@ -26,8 +26,7 @@
         </button>
     </div>
     <form method="post" style="background-color:black" 
-    asp-action="GetVillasByDate" data-ajax-method="post" 
-    data-ajax="true" data-ajax-mode="replace" data-ajax-update="#VillasList">
+    asp-action="GetVillasByDate">
         <div class="row p-0 mx-0 py-4">
 
             <div class="col-12 col-md-5  offset-md-1 pl-2  pr-2 pr-md-0">
@@ -51,7 +50,8 @@
 
             <div class="col-4 col-md-2 pt-4 pr-2">
                 <div class="form-group">
-                    <button type="submit" class="btn btn-success btn-block">
+                    <button type="button" class="btn btn-success btn-block"
+                            onclick="fnLoadVillaList()">
                         <i class="bi bi-search"></i>  &nbsp; Check Availability
                     </button>
 
@@ -62,3 +62,33 @@
         <partial name="_VillaList" model="Model" />
     </form>
 </div>
+
+@section scripts{
+    <script>
+        function fnLoadVillaList() {
+            var objData = {
+                checkInDate: $("#CheckInDate").val(),
+                nights: $("#Nights").val()
+            };
+            
+            $.ajax({
+                type: "POST",
+                url: "@Url.Action("GetVillasByDate", "Home")",
+                data: objData,
+                success: function (response) {
+                    $('#VillasList').empty();
+                    $("#VillasList").html(response);
+                  
+                },
+                failure: function (response) {
+                
+                    alert(response.responseText);
+                },
+                error: function (response) {
+                 
+                    alert(response.responseText);
+                }
+            });
+        }
+    </script>
+}
