@@ -25,9 +25,20 @@
                     <div class="col-12">
                         <div class="row pb-3 pt-2">
                             <div class="col-4">
+                                @if (Model.CheckInDate >= DateOnly.FromDateTime(DateTime.Now))
+                                {
+                                    if (villa.IsAvailable)
+                                    {
                                         <a class="btn btn-success form-control btn-block">
                                             Book
                                         </a>
+                                    }
+                                    else
+                                    {
+                                        <a href="javascript:void(0)" class="btn btn-outline-danger  form-control btn-block">Sold Out</a>
+                                    }
+
+                                }
                             </div>
                             <div class="col-4">
                                 <span class="">Max Occupancy : @villa.Occupancy adults </span><br />
