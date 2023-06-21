@@ -32,7 +32,7 @@ namespace WhiteLagoon.Domain.Entities
         public string? Status { get; set; }
 
         [Required]
-        public DateOnly BookingDate { get; set; }
+        public DateTime BookingDate { get; set; }
         [Required]
         public DateOnly CheckInDate { get; set; }
         [Required]
