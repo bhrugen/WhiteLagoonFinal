@@ -124,5 +124,36 @@ namespace WhiteLagoon.Web.Controllers
         {
             return View();
         }
+
+
+        #region API Calls
+        [HttpGet]
+        public IActionResult GetAll(string status = "")
+        {
+            IEnumerable<Booking> objBookings;
+
+
+            if (User.IsInRole(SD.Role_Admin))
+            {
+                objBookings = _unitOfWork.Booking.GetAll(includeProperties: "User,Villa").ToList();
+            }
+            else
+            {
+
+                var claimsIdentity = (ClaimsIdentity)User.Identity;
+                var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+                objBookings = _unitOfWork.Booking
+                    .GetAll(u => u.UserId == userId, includeProperties: "User,Villa");
+            }
+
+            //if (!string.IsNullOrWhiteSpace(status))
+            //{
+            //    objBookings = objBookings.Where(u => u.Status.ToLower() == status.ToLower());
+            //}
+
+            return Json(new { data = objBookings });
+        }
+        #endregion
     }
 }
