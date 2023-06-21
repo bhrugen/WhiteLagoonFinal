@@ -39,6 +39,7 @@ namespace WhiteLagoon.Domain.Entities
         public DateOnly CheckOutDate { get; set; }
 
         public bool IsPaymentSuccessful { get; set; } = false;
+        public DateTime PaymentDate { get; set; }
         public string? StripeSessionId { get; set; }
         public string? StripePaymentIntentId { get; set; }
 
