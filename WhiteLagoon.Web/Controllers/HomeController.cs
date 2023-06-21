@@ -27,6 +27,10 @@ namespace WhiteLagoon.Web.Controllers
 
         public IActionResult GetVillasByDate(int nights, DateOnly checkInDate)
         {
+            //  CheckInDate	CheckOutDate -- will not work for checkin date of 6/29 and 2 nights
+            //                      2023 - 06 - 29  2023 - 07 - 02
+            //                      2023 - 06 - 30  2023 - 07 - 04
+            //                      2023 - 06 - 29  2023 - 06 - 30
             var villaList = _unitOfWork.Villa.GetAll(includeProperties: "VillaAmenity").ToList();
             var villaNumbersList = _unitOfWork.VillaNumber.GetAll().ToList();
             var bookedVillas = _unitOfWork.Booking.GetAll(u => u.Status == SD.StatusApproved ||

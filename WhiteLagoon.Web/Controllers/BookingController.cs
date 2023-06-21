@@ -88,7 +88,28 @@ namespace WhiteLagoon.Web.Controllers
             });
 
 
+            var villaNumbersList = _unitOfWork.VillaNumber.GetAll().ToList();
+            var bookedVillas = _unitOfWork.Booking.GetAll(u => u.Status == SD.StatusApproved ||
+            u.Status == SD.StatusCheckedIn).ToList();
+
+            int roomsAvailable = SD.VillaRoomsAvailable_Count(villa, villaNumbersList,
+                booking.CheckInDate, booking.Nights, bookedVillas);
+            if (roomsAvailable == 0)
+            {
+                TempData["error"] = "Room has been sold out!";
+                //no rooms available
+                return RedirectToAction(nameof(FinalizeBooking), new
+                {
+                    villaId = booking.VillaId,
+                    checkInDate = booking.CheckInDate,
+                    nights = booking.Nights
+                });
+            }
+
+
             var service = new SessionService();
+
+
 
             Session session = service.Create(options);
             _unitOfWork.Booking.UpdateStripePaymentID(booking.Id, session.Id, session.PaymentIntentId);
