@@ -118,5 +118,11 @@ namespace WhiteLagoon.Web.Controllers
             }
             return View(bookingId);
         }
+
+        [Authorize]
+        public IActionResult Index()
+        {
+            return View();
+        }
     }
 }
