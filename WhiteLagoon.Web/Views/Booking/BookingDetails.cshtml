@@ -10,7 +10,7 @@
                     <h3 class="text-success">Villa Details</h3>
                 </div>
                 <div class="col-6 text-end">
-                    <a class="btn btn-secondary my-2"><i class="bi bi-arrow-left-circle"></i> Back to Bookings</a>
+                    <a asp-controller="Booking" asp-action="Index" asp-route-status="Approved" class="btn btn-secondary my-2"><i class="bi bi-arrow-left-circle"></i> Back to Bookings</a>
                 </div>
                 <hr />
                 <partial name="_VillaDetail" model="@Model.Villa" />
@@ -38,7 +38,10 @@
                         <h3 class="text-success">Enter Booking Details</h3>
                     </div>
                     <div class="col-6">
-                        <button type="submit" class="btn btn-sm btn-outline-danger form-control my-1"><i class="bi bi-x-circle"></i> &nbsp; Cancel Booking</button>
+                        @if ((Model.Status == SD.StatusApproved || Model.Status == SD.StatusPending) && User.IsInRole(SD.Role_Admin))
+                        {
+                            <button asp-action="CancelBooking" type="submit" class="btn btn-sm btn-outline-danger form-control my-1"><i class="bi bi-x-circle"></i> &nbsp; Cancel Booking</button>
+                        }
                     </div>
                 </div>
                 <div class="row">
@@ -110,12 +113,17 @@
                     }
                     </>
                     <div class="form-group pt-2 pt-md-4">
-
-
-                        <button type="submit" class="btn btn-warning form-control my-1"><i class="bi bi-check2-square"></i> &nbsp; Check In</button>
-
-                        <button type="submit" class="btn btn-success form-control my-1"><i class="bi bi-clipboard2-check"></i> &nbsp; Check Out / Complete Booking</button>
-
+                        @if (User.IsInRole(SD.Role_Admin))
+                        {
+                            @if (Model.Status == SD.StatusApproved)
+                            {
+                                <button asp-action="CheckIn" type="submit" class="btn btn-warning form-control my-1"><i class="bi bi-check2-square"></i> &nbsp; Check In</button>
+                            }
+                            @if (Model.Status == SD.StatusCheckedIn)
+                            {
+                                <button asp-action="CheckOut" type="submit" class="btn btn-success form-control my-1"><i class="bi bi-clipboard2-check"></i> &nbsp; Check Out / Complete Booking</button>
+                            }
+                        }
                     </div>
             </form>
         </div>
