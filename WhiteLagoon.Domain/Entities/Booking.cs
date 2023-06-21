@@ -28,7 +28,7 @@ namespace WhiteLagoon.Domain.Entities
 
         [Required]
         public double TotalCost { get; set; }
-
+        public int Nights { get; set; }
         public string? Status { get; set; }
 
         [Required]
