@@ -100,6 +100,22 @@ namespace WhiteLagoon.Web.Controllers
         [Authorize]
         public IActionResult BookingConfirmation(int bookingId)
         {
+            Booking bookingFromDb = _unitOfWork.Booking.Get(u => u.Id == bookingId, includeProperties: "User,Villa");
+            if (bookingFromDb.Status == SD.StatusPending)
+            {
+                //this is a pending order
+
+                var service = new SessionService();
+                Session session = service.Get(bookingFromDb.StripeSessionId);
+
+                if (session.PaymentStatus.ToLower() == "paid")
+                {
+                    _unitOfWork.Booking.UpdateStripePaymentID(bookingId, session.Id, session.PaymentIntentId);
+                    _unitOfWork.Booking.UpdateStatus(bookingId, SD.StatusApproved, 0);
+                    _unitOfWork.Save();
+                }
+
+            }
             return View(bookingId);
         }
     }

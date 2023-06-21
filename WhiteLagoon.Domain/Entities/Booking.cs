@@ -13,7 +13,8 @@ namespace WhiteLagoon.Domain.Entities
         public int Id { get; set; }
         [Required]
         public string UserId { get; set; }
-
+        [ForeignKey("UserId")]
+        public ApplicationUser User { get; set; }
         [Required]
         public int VillaId { get; set; }
         [ForeignKey("VillaId")]

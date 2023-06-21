@@ -56,6 +56,7 @@ namespace WhiteLagoon.Infrastructure.Repository
             {
                 bookingFromDb.StripePaymentIntentId = paymentIntentId;
                 bookingFromDb.PaymentDate = DateTime.Now;
+                bookingFromDb.IsPaymentSuccessful = true;
             }
         }
     }
