@@ -147,10 +147,10 @@ namespace WhiteLagoon.Web.Controllers
                     .GetAll(u => u.UserId == userId, includeProperties: "User,Villa");
             }
 
-            //if (!string.IsNullOrWhiteSpace(status))
-            //{
-            //    objBookings = objBookings.Where(u => u.Status.ToLower() == status.ToLower());
-            //}
+            if (!string.IsNullOrWhiteSpace(status))
+            {
+                objBookings = objBookings.Where(u => u.Status.ToLower() == status.ToLower());
+            }
 
             return Json(new { data = objBookings });
         }
