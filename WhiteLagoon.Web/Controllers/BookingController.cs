@@ -39,5 +39,7 @@ namespace WhiteLagoon.Web.Controllers
             booking.TotalCost = booking.Villa.Price * nights;
             return View(booking);
         }
+
+
     }
 }
