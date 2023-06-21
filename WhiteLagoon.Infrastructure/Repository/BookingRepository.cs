@@ -34,6 +34,7 @@ namespace WhiteLagoon.Infrastructure.Repository
                 orderFromDb.Status = orderStatus;
                 if (orderStatus == SD.StatusCheckedIn && villaNumber > 0)
                 {
+                    orderFromDb.VillaNumber = villaNumber;
                     orderFromDb.ActualCheckInDate = DateTime.Now;
                 }
                 if (orderStatus == SD.StatusCompleted)
