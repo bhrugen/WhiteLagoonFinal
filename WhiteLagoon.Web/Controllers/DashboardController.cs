@@ -63,5 +63,20 @@ namespace WhiteLagoon.Web.Controllers
             };
             return Json(data);
         }
+
+        public async Task<IActionResult> GetMemberAndBookingChartData()
+        {
+            DashboardLineChartVM dashboardLineChartVM = await _unitOfWork.Dashboard.GetMemberAndBookingChartDataAsync();
+
+            // Retrieve your data and format it as needed
+            var data = new
+            {
+                series = dashboardLineChartVM.ChartData,
+                categories = dashboardLineChartVM.Categories
+            };
+
+            // Manually serialize the data to JSON
+            return Json(data);
+        }
     }
 }
