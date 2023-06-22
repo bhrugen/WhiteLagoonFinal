@@ -191,6 +191,28 @@ namespace WhiteLagoon.Infrastructure.Repository
 
             return dashboardLineChartVM;
         }
+        public async Task<DashboardPieChartVM> GetBookingPieChartDataAsync()
+        {
+            DashboardPieChartVM dashboardPieChartVM = new DashboardPieChartVM();
+            try
+            {
+                var newCustomerBookings = _db.Bookings.AsEnumerable().GroupBy(b => b.UserId)
+                    .Where(g => g.Count() == 1).Select(g => g.Key).Count();
 
+                var returningCustomerBookings = _db.Bookings.AsEnumerable().GroupBy(b => b.UserId)
+                    .Where(g => g.Count() > 1).Select(g => g.Key).Count();
+
+                dashboardPieChartVM.Labels = new string[] { "New Customers", "Returning Customers" };
+                dashboardPieChartVM.Series = new decimal[] { newCustomerBookings, returningCustomerBookings };
+
+                await Task.CompletedTask;
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+
+            return dashboardPieChartVM;
+        }
     }
 }

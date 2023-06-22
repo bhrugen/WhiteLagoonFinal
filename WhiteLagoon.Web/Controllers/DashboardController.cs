@@ -78,5 +78,20 @@ namespace WhiteLagoon.Web.Controllers
             // Manually serialize the data to JSON
             return Json(data);
         }
+
+        public async Task<IActionResult> GetCustomerBookingsPieChartData()
+        {
+            DashboardPieChartVM dashboardPieChartVM = await _unitOfWork.Dashboard.GetBookingPieChartDataAsync();
+
+            // Retrieve your data and format it as needed
+            var data = new
+            {
+                series = dashboardPieChartVM.Series,
+                labels = dashboardPieChartVM.Labels
+            };
+
+            // Manually serialize the data to JSON
+            return Json(data);
+        }
     }
 }

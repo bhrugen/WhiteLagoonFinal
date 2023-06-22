@@ -15,5 +15,7 @@ namespace WhiteLagoon.Application.Common.Interfaces
         Task<RadialBarChartVM> GetRevenueChartDataAsync();
         Task<RadialBarChartVM> GetRegisteredUserChartDataAsync();
         Task<DashboardLineChartVM> GetMemberAndBookingChartDataAsync();
+
+        Task<DashboardPieChartVM> GetBookingPieChartDataAsync();
     }
 }
