@@ -47,5 +47,65 @@ namespace WhiteLagoon.Infrastructure.Repository
             dashboardRadialBarChartVM.Series = new decimal[] { increaseDecreaseRatio };
             return dashboardRadialBarChartVM;
         }
+
+        public async Task<RadialBarChartVM> GetRevenueChartDataAsync()
+        {
+            RadialBarChartVM dashboardRadialBarChartVM = new ();
+                decimal totalCost = Convert.ToDecimal(await _db.Bookings.SumAsync(x => x.TotalCost));
+
+                
+                DateTime previousMonthStartDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month - 1, 1);
+                DateTime currentMonthStartDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
+
+                var sumByCurrentMonth = _db.Bookings.Where((r => r.BookingDate >= currentMonthStartDate && r.BookingDate < DateTime.Now)).Sum(x => x.TotalCost);
+                var sumByPreviousMonth = _db.Bookings.Where(r => r.BookingDate >= previousMonthStartDate && r.BookingDate < currentMonthStartDate).Sum(x => x.TotalCost);
+
+                decimal increaseDecreaseRatio = 100;
+                bool isIncrease = true;
+                // Considering any non-zero count in current month as 100% increase.
+
+                if (sumByPreviousMonth != 0)
+                {
+                    increaseDecreaseRatio = Convert.ToDecimal(Math.Round(((double)sumByCurrentMonth - sumByPreviousMonth) / sumByPreviousMonth * 100, 2));
+                    isIncrease = sumByCurrentMonth > sumByPreviousMonth;
+                }
+
+                dashboardRadialBarChartVM.TotalCount = totalCost;
+                dashboardRadialBarChartVM.IncreaseDecreaseRatio = increaseDecreaseRatio;
+                dashboardRadialBarChartVM.HasRatioIncreased = isIncrease;
+                dashboardRadialBarChartVM.Series = new decimal[] { increaseDecreaseRatio };
+            return dashboardRadialBarChartVM;
+        }
+
+        public async Task<RadialBarChartVM> GetRegisteredUserChartDataAsync()
+        {
+            RadialBarChartVM dashboardRadialBarChartVM =    new();
+                int totalCount = await _db.Users.CountAsync();
+
+               
+                DateTime previousMonthStartDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month - 1, 1);
+                DateTime currentMonthStartDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
+
+                var countByCurrentMonth = _db.Users.Count(r => r.CreatedAt >= currentMonthStartDate && r.CreatedAt < DateTime.Now);
+                var countByPreviousMonth = _db.Users.Count(r => r.CreatedAt >= previousMonthStartDate && r.CreatedAt < currentMonthStartDate);
+
+                decimal increaseDecreaseRatio = 100;
+                bool isIncrease = true;
+                // Considering any non-zero count in current month as 100% increase.
+
+                if (countByPreviousMonth != 0)
+                {
+                    increaseDecreaseRatio = Math.Round(((decimal)countByCurrentMonth - countByPreviousMonth) / countByPreviousMonth * 100, 2);
+                    isIncrease = countByCurrentMonth > countByPreviousMonth;
+                }
+
+                dashboardRadialBarChartVM.TotalCount = totalCount;
+                dashboardRadialBarChartVM.IncreaseDecreaseRatio = increaseDecreaseRatio;
+                dashboardRadialBarChartVM.HasRatioIncreased = isIncrease;
+                dashboardRadialBarChartVM.Series = new decimal[] { increaseDecreaseRatio };
+
+            return dashboardRadialBarChartVM;
+        }
+
     }
 }
