@@ -24,7 +24,6 @@ namespace WhiteLagoon.Web.Controllers
         {
             RadialBarChartVM dashboardRadialBarChartVM = await _unitOfWork.Dashboard.GetBookingsChartDataAsync();
 
-            // Retrieve your data and format it as needed
             var data = new
             {
                 series = dashboardRadialBarChartVM.Series, //new int[] { 30 },
@@ -32,7 +31,33 @@ namespace WhiteLagoon.Web.Controllers
                 increaseDecreaseRatio = dashboardRadialBarChartVM.IncreaseDecreaseRatio,
                 hasRatioIncreased = dashboardRadialBarChartVM.HasRatioIncreased
             };
+            return Json(data);
+        }
+        public async Task<IActionResult> GetTotalRevenueChartData()
+        {
+            RadialBarChartVM dashboardRadialBarChartVM = await _unitOfWork.Dashboard.GetRevenueChartDataAsync();
 
+            var data = new
+            {
+                series = dashboardRadialBarChartVM.Series, //new int[] { 30 },
+                totalCount = dashboardRadialBarChartVM.TotalCount,
+                increaseDecreaseRatio = dashboardRadialBarChartVM.IncreaseDecreaseRatio,
+                hasRatioIncreased = dashboardRadialBarChartVM.HasRatioIncreased
+            };
+            return Json(data);
+        }
+
+        public async Task<IActionResult> GetRegisteredUserChartData()
+        {
+            RadialBarChartVM dashboardRadialBarChartVM = await _unitOfWork.Dashboard.GetRegisteredUserChartDataAsync();
+
+            var data = new
+            {
+                series = dashboardRadialBarChartVM.Series, //new int[] { 30 },
+                totalCount = dashboardRadialBarChartVM.TotalCount,
+                increaseDecreaseRatio = dashboardRadialBarChartVM.IncreaseDecreaseRatio,
+                hasRatioIncreased = dashboardRadialBarChartVM.HasRatioIncreased
+            };
             return Json(data);
         }
     }
