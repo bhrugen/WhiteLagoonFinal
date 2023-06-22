@@ -5,11 +5,12 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using WhiteLagoon.Domain.Entities;
+using WhiteLagoon.Domain.SharedModels;
 
 namespace WhiteLagoon.Application.Common.Interfaces
 {
     public interface IDashboardRepository 
     {
-        
+        Task<RadialBarChartVM> GetBookingsChartDataAsync();
     }
 }
