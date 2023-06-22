@@ -15,7 +15,7 @@ function loadTotalBookingChart() {
             // Handle the response data
             document.querySelector("#spanTotalBookingCount").innerHTML = data.totalCount;
             var sectionBookingRatioHtml = document.createElement("span");
-            if (data.isRatioIncrease) {
+            if (data.hasRatioIncreased) {
                 sectionBookingRatioHtml.className = "text-success me-1";
                 sectionBookingRatioHtml.innerHTML = "<i class='bi bi-arrow-up-right-circle me-1'></i><span>" + data.increaseDecreaseRatio + "%</span>";
             }
@@ -40,8 +40,10 @@ function loadTotalBookingChart() {
 
 // Function to load the RadialBar chart
 function loadRadialBarChart(id, data) {
+    var chartColors = getChartColorsArray(id);
     var options = {
         fill: {
+            colors: chartColors
         },
         chart: {
             type: 'radialBar',
@@ -58,6 +60,7 @@ function loadRadialBarChart(id, data) {
                 dataLabels: {
                     value: {
                         offsetY: -10,
+                        color: chartColors[0],
                     }
                 }
             }
@@ -70,3 +73,19 @@ function loadRadialBarChart(id, data) {
 }
 
 
+function getChartColorsArray(chartId) {
+    if (document.getElementById(chartId) !== null) {
+        var colors = document.getElementById(chartId).getAttribute("data-colors");
+        if (colors) {
+            colors = JSON.parse(colors);
+            return colors.map(function (value) {
+                var newValue = value.replace(" ", "");
+                if (newValue.indexOf(",") === -1) {
+                    var color = getComputedStyle(document.documentElement).getPropertyValue(newValue);
+                    if (color) return color;
+                    else return newValue;;
+                }
+            });
+        }
+    }
+}
