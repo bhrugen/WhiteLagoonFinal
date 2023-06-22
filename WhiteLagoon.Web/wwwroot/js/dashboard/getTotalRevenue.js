@@ -17,11 +17,11 @@ function loadTotalRevenueChart() {
             var sectionRevenueRatioHtml = document.createElement("span");
             if (data.hasRatioIncreased) {
                 sectionRevenueRatioHtml.className = "text-success me-1";
-                sectionRevenueRatioHtml.innerHTML = "<i class='bi bi-arrow-up-right-circle me-1'></i><span>" + data.increaseDecreaseRatio + "%</span>";
+                sectionRevenueRatioHtml.innerHTML = "<i class='bi bi-arrow-up-right-circle me-1'></i><span>+" + data.increaseDecreaseAmount + "</span>";
             }
             else {
                 sectionRevenueRatioHtml.className = "text-danger me-1";
-                sectionRevenueRatioHtml.innerHTML = "<i class='bi bi-arrow-down-right-circle me-1'></i><span>" + data.increaseDecreaseRatio + "%</span>";
+                sectionRevenueRatioHtml.innerHTML = "<i class='bi bi-arrow-down-right-circle me-1'></i><span>+" + data.increaseDecreaseAmount + "</span>";
             }
             document.querySelector("#sectionRevenueRatio").append(sectionRevenueRatioHtml);
             document.querySelector("#sectionRevenueRatio").append("since last month");

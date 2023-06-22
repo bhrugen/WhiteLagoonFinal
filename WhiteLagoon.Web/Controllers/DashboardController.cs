@@ -29,7 +29,8 @@ namespace WhiteLagoon.Web.Controllers
                 series = dashboardRadialBarChartVM.Series, //new int[] { 30 },
                 totalCount = dashboardRadialBarChartVM.TotalCount,
                 increaseDecreaseRatio = dashboardRadialBarChartVM.IncreaseDecreaseRatio,
-                hasRatioIncreased = dashboardRadialBarChartVM.HasRatioIncreased
+                hasRatioIncreased = dashboardRadialBarChartVM.HasRatioIncreased,
+                increaseDecreaseAmount = dashboardRadialBarChartVM.IncreaseDecreaseAmount
             };
             return Json(data);
         }
@@ -42,7 +43,8 @@ namespace WhiteLagoon.Web.Controllers
                 series = dashboardRadialBarChartVM.Series, //new int[] { 30 },
                 totalCount = dashboardRadialBarChartVM.TotalCount,
                 increaseDecreaseRatio = dashboardRadialBarChartVM.IncreaseDecreaseRatio,
-                hasRatioIncreased = dashboardRadialBarChartVM.HasRatioIncreased
+                hasRatioIncreased = dashboardRadialBarChartVM.HasRatioIncreased,
+                increaseDecreaseAmount = dashboardRadialBarChartVM.IncreaseDecreaseAmount
             };
             return Json(data);
         }
@@ -56,7 +58,8 @@ namespace WhiteLagoon.Web.Controllers
                 series = dashboardRadialBarChartVM.Series, //new int[] { 30 },
                 totalCount = dashboardRadialBarChartVM.TotalCount,
                 increaseDecreaseRatio = dashboardRadialBarChartVM.IncreaseDecreaseRatio,
-                hasRatioIncreased = dashboardRadialBarChartVM.HasRatioIncreased
+                hasRatioIncreased = dashboardRadialBarChartVM.HasRatioIncreased,
+                increaseDecreaseAmount = dashboardRadialBarChartVM.IncreaseDecreaseAmount
             };
             return Json(data);
         }

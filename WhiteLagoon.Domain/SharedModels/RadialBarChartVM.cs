@@ -10,6 +10,7 @@ namespace WhiteLagoon.Domain.SharedModels
     {
         public decimal TotalCount { get; set; }
         public decimal IncreaseDecreaseRatio { get; set; }
+        public decimal IncreaseDecreaseAmount { get; set; }
         public bool HasRatioIncreased { get; set; }
         public decimal[] Series { get; set; }
     }

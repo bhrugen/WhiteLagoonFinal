@@ -17,11 +17,11 @@ function loadTotalRegisteredUserChart() {
             var sectionUserRegisterdRatioHtml = document.createElement("span");
             if (data.hasRatioIncreased) {
                 sectionUserRegisterdRatioHtml.className = "text-success me-1";
-                sectionUserRegisterdRatioHtml.innerHTML = "<i class='bi bi-arrow-up-right-circle me-1'></i><span>" + data.increaseDecreaseRatio + "%</span>";
+                sectionUserRegisterdRatioHtml.innerHTML = "<i class='bi bi-arrow-up-right-circle me-1'></i><span>+" + data.increaseDecreaseAmount + "</span>";
             }
             else {
                 sectionUserRegisterdRatioHtml.className = "text-danger me-1";
-                sectionUserRegisterdRatioHtml.innerHTML = "<i class='bi bi-arrow-down-right-circle me-1'></i><span>" + data.increaseDecreaseRatio + "%</span>";
+                sectionUserRegisterdRatioHtml.innerHTML = "<i class='bi bi-arrow-down-right-circle me-1'></i><span>+" + data.increaseDecreaseAmount + "</span>";
             }
             document.querySelector("#sectionUserRegisterdRatio").append(sectionUserRegisterdRatioHtml);
             document.querySelector("#sectionUserRegisterdRatio").append("since last month");

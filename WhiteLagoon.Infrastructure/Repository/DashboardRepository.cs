@@ -40,7 +40,7 @@ namespace WhiteLagoon.Infrastructure.Repository
                 increaseDecreaseRatio = Math.Round(((decimal)countByCurrentMonth - countByPreviousMonth) / countByPreviousMonth * 100, 2);
                 hasIncreased = countByCurrentMonth > countByPreviousMonth;
             }
-
+            dashboardRadialBarChartVM.IncreaseDecreaseAmount = (decimal)countByCurrentMonth;
             dashboardRadialBarChartVM.TotalCount = totalBooking;
             dashboardRadialBarChartVM.IncreaseDecreaseRatio = increaseDecreaseRatio;
             dashboardRadialBarChartVM.HasRatioIncreased = hasIncreased;
@@ -71,6 +71,7 @@ namespace WhiteLagoon.Infrastructure.Repository
                 }
 
                 dashboardRadialBarChartVM.TotalCount = totalCost;
+                dashboardRadialBarChartVM.IncreaseDecreaseAmount = (decimal)sumByCurrentMonth;
                 dashboardRadialBarChartVM.IncreaseDecreaseRatio = increaseDecreaseRatio;
                 dashboardRadialBarChartVM.HasRatioIncreased = isIncrease;
                 dashboardRadialBarChartVM.Series = new decimal[] { increaseDecreaseRatio };
@@ -98,7 +99,7 @@ namespace WhiteLagoon.Infrastructure.Repository
                     increaseDecreaseRatio = Math.Round(((decimal)countByCurrentMonth - countByPreviousMonth) / countByPreviousMonth * 100, 2);
                     isIncrease = countByCurrentMonth > countByPreviousMonth;
                 }
-
+                dashboardRadialBarChartVM.IncreaseDecreaseAmount = (decimal)countByCurrentMonth;
                 dashboardRadialBarChartVM.TotalCount = totalCount;
                 dashboardRadialBarChartVM.IncreaseDecreaseRatio = increaseDecreaseRatio;
                 dashboardRadialBarChartVM.HasRatioIncreased = isIncrease;

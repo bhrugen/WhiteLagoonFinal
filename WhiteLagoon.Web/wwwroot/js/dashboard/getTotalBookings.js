@@ -17,11 +17,11 @@ function loadTotalBookingChart() {
             var sectionBookingRatioHtml = document.createElement("span");
             if (data.hasRatioIncreased) {
                 sectionBookingRatioHtml.className = "text-success me-1";
-                sectionBookingRatioHtml.innerHTML = "<i class='bi bi-arrow-up-right-circle me-1'></i><span>" + data.increaseDecreaseRatio + "%</span>";
+                sectionBookingRatioHtml.innerHTML = "<i class='bi bi-arrow-up-right-circle me-1'></i><span>+" + data.increaseDecreaseAmount + "</span>";
             }
             else {
                 sectionBookingRatioHtml.className = "text-danger me-1";
-                sectionBookingRatioHtml.innerHTML = "<i class='bi bi-arrow-down-right-circle me-1'></i><span>" + data.increaseDecreaseRatio + "%</span>";
+                sectionBookingRatioHtml.innerHTML = "<i class='bi bi-arrow-down-right-circle me-1'></i><span>+" + data.increaseDecreaseAmount + "</span>";
             }
             document.querySelector("#sectionBookingRatio").append(sectionBookingRatioHtml);
             document.querySelector("#sectionBookingRatio").append("since last month");
