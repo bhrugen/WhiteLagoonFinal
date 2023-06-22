@@ -111,7 +111,7 @@
                             <input asp-for="VillaNumber" disabled class="form-control" />
                         }
                     </div>
-                    @if (Model.IsPaymentSuccessful)
+                    @if (Model.IsPaymentSuccessful && User.IsInRole(SD.Role_Admin))
                     {
                         <div class="form-group pt-2 col-6">
                             <label class="text-warning" asp-for="StripePaymentIntentId"></label>
