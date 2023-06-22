@@ -18,7 +18,7 @@
                     </div>
                     <div>
                         <p class="text-muted mb-0">Total Bookings</p>
-                        <h4 class="mb-1 mt-1"><span data-plugin="counterup" id="chartTotalCount"></span></h4>
+                        <h4 class="mb-1 mt-1"><span data-plugin="counterup" id="spanTotalBookingCount"></span></h4>
                     </div>
                     <p class="text-muted mt-3 mb-0" id="sectionBookingRatio"></p>
 
@@ -34,3 +34,6 @@
 </div>
 
 
+@section scripts{
+    <script src="~/js/dashboard/getTotalBookings.js"></script>
+}
