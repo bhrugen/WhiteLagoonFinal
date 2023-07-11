@@ -1,20 +1,29 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Stripe.Checkout;
+using Syncfusion.DocIO.DLS;
+using Syncfusion.DocIO;
+using Syncfusion.DocIORenderer;
+using Syncfusion.Pdf;
+using System.Globalization;
 using System.Security.Claims;
 using WhiteLagoon.Application.Common.Interfaces;
 using WhiteLagoon.Application.Common.Utility;
 using WhiteLagoon.Domain.Entities;
+using System.Reflection.Metadata;
 
 namespace WhiteLagoon.Web.Controllers
 {
     public class BookingController : Controller
     {
+        private readonly IWebHostEnvironment _webHostEnvironment;
         private readonly List<string> _bookedStatus = new List<string> { "Approved", "CheckedIn" };
         private readonly IUnitOfWork _unitOfWork;
-        public BookingController(IUnitOfWork unitOfWork)
+        public BookingController(IUnitOfWork unitOfWork, IWebHostEnvironment webHostEnvironment)
         {
             _unitOfWork = unitOfWork;
+            _webHostEnvironment = webHostEnvironment;
         }
         [Authorize]
         //INSTALL JSDELIVER add client side and search for jquery-ajax-unobtrusive@3.2.6
@@ -193,6 +202,112 @@ namespace WhiteLagoon.Web.Controllers
             TempData["Success"] = "Booking Updated Successfully.";
             return RedirectToAction(nameof(BookingDetails), new { bookingId = booking.Id });
         }
+
+        [HttpPost]
+        [Authorize(Roles = SD.Role_Admin)]
+        public IActionResult GeneratePDF(int id)
+        {
+            string basePath = _webHostEnvironment.WebRootPath;
+
+            // Create a new document
+            WordDocument doc = new();
+
+            // Load the template.
+            string dataPathSales = basePath + @"/exports/SampleVilla.docx";
+            FileStream fileStream = new FileStream(dataPathSales, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+            doc.Open(fileStream, FormatType.Automatic);
+
+
+
+            //Get Villa Booking Details
+            Booking bookingFromDb = _unitOfWork.Booking.Get(u => u.Id == id, includeProperties: "User,Villa");
+
+            
+            TextSelection textSelection = doc.Find("xx_customer_name", false, true);
+            WTextRange textRange = textSelection.GetAsOneRange();
+            textRange.Text = bookingFromDb.Name;
+            
+            textSelection = doc.Find("xx_customer_phone", false, true);
+            textRange = textSelection.GetAsOneRange();
+            textRange.Text = bookingFromDb.Phone;
+
+            textSelection = doc.Find("xx_customer_email", false, true);
+            textRange = textSelection.GetAsOneRange();
+            textRange.Text = bookingFromDb.Email;
+
+            textSelection = doc.Find("xx_Booking_date", false, true);
+            textRange = textSelection.GetAsOneRange();
+            textRange.Text = "BOOKING DATE - " + bookingFromDb.BookingDate.ToShortDateString();
+
+            textSelection = doc.Find("xx_BOOKING_NUMBER", false, true);
+            textRange = textSelection.GetAsOneRange();
+            textRange.Text = "BOOKING ID: " + bookingFromDb.Id.ToString();
+
+            textSelection = doc.Find("xx_payment_date", false, true);
+            textRange = textSelection.GetAsOneRange();
+            textRange.Text = bookingFromDb.PaymentDate.ToShortDateString();
+
+            textSelection = doc.Find("xx_checkin_date", false, true);
+            textRange = textSelection.GetAsOneRange();
+            textRange.Text = bookingFromDb.CheckInDate.ToShortDateString();
+
+            textSelection = doc.Find("xx_checkout_date", false, true);
+            textRange = textSelection.GetAsOneRange();
+            textRange.Text = bookingFromDb.CheckOutDate.ToShortDateString();
+
+            textSelection = doc.Find("xx_booking_total", false, true);
+            textRange = textSelection.GetAsOneRange();
+            textRange.Text = bookingFromDb.TotalCost.ToString("c");
+
+
+            //Sets highlight color
+            //textRange.CharacterFormat.HighlightColor = Color.Yellow;
+
+
+            //MailMergeDataTable villaBookingDetailDataSource = new MailMergeDataTable("VillaBookingDetails", villaBookingDetail.VillaBookingDetails);
+            //doc.MailMerge.ExecuteGroup(villaBookingDetailDataSource);
+
+            ////Get Villa Details
+            //MailMergeDataTable villaDetailsDataSource = new MailMergeDataTable("VillaDetails", villaBookingDetail.VillaDetails);
+            //doc.MailMerge.ExecuteGroup(villaDetailsDataSource);
+
+            ////Get Villa Payment Details
+            //MailMergeDataTable villaPaymentDetailsDataSource = new MailMergeDataTable("VillaPaymentDetails", villaBookingDetail.VillaPaymentDetails);
+            //doc.MailMerge.ExecuteGroup(villaPaymentDetailsDataSource);
+
+            //// Using Merge events to do conditional formatting during runtime.
+            //doc.MailMerge.MergeField += new MergeFieldEventHandler(MailMerge_MergeField);
+
+            using (DocIORenderer render = new DocIORenderer())
+            {
+                //Converts Word document into PDF document
+                PdfDocument pdfDocument = render.ConvertToPDF(doc);
+
+                //Saves the PDF document to MemoryStream.
+                MemoryStream stream = new MemoryStream();
+                pdfDocument.Save(stream);
+                stream.Position = 0;
+
+                //Download PDF document in the browser.
+                return File(stream, "application/pdf", "VillaDetails.pdf");
+            }
+        }
+
+       
+        private void MailMerge_MergeField(object sender, MergeFieldEventArgs args)
+        {
+            // Conditionally format data during Merge.
+            if (args.RowIndex % 2 == 0)
+            {
+                args.CharacterFormat.TextColor = Syncfusion.Drawing.Color.DarkBlue;
+            }
+
+        }
+
+
+
+
+
 
         #region API Calls
         [HttpGet]
