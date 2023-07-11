@@ -332,14 +332,16 @@ namespace WhiteLagoon.Web.Controllers
             doc.Replace("<ADDTABLEHERE>", part, false, false);
            
             using DocIORenderer render = new();
-           
+            //Converts Word document into PDF document
+            PdfDocument pdfDocument = render.ConvertToPDF(doc);
+
             //Saves the PDF document to MemoryStream.
             MemoryStream stream = new();
-            doc.Save(stream,FormatType.Docx);
+            pdfDocument.Save(stream);
             stream.Position = 0;
 
             //Download PDF document in the browser.
-            return File(stream, "application/docx", "BookingDetails.docx");
+            return File(stream, "application/pdf", "BookingDetails.pdf");
         }
 
        
