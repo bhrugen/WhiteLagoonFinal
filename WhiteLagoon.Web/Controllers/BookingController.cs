@@ -12,6 +12,8 @@ using WhiteLagoon.Application.Common.Interfaces;
 using WhiteLagoon.Application.Common.Utility;
 using WhiteLagoon.Domain.Entities;
 using System.Reflection.Metadata;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Syncfusion.Drawing;
 
 namespace WhiteLagoon.Web.Controllers
 {
@@ -213,8 +215,8 @@ namespace WhiteLagoon.Web.Controllers
             WordDocument doc = new();
 
             // Load the template.
-            string dataPathSales = basePath + @"/exports/SampleVilla.docx";
-            FileStream fileStream = new FileStream(dataPathSales, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+            string dataPathSales = basePath + @"/exports/BookingDetails.docx";
+            using FileStream fileStream = new(dataPathSales, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
             doc.Open(fileStream, FormatType.Automatic);
 
 
@@ -259,53 +261,91 @@ namespace WhiteLagoon.Web.Controllers
             textRange = textSelection.GetAsOneRange();
             textRange.Text = bookingFromDb.TotalCost.ToString("c");
 
+            
+            TextBodyPart part = new TextBodyPart(doc);
 
-            //Sets highlight color
-            //textRange.CharacterFormat.HighlightColor = Color.Yellow;
+            WTable table = new WTable(doc);
+
+            //sets lineWidth and color
+
+            table.TableFormat.Borders.LineWidth = 1f;
+
+            table.TableFormat.Borders.Color = Color.Black;
+
+            //Sets number of rows and columns.
+            int rows = bookingFromDb.VillaNumber > 0 ? 3 : 2;
+            table.ResetCells(rows, 4);
+
+            //Selects the first row and appends text in each cell.
+
+            WTableRow row0 = table.Rows[0];
+
+            row0.Cells[0].AddParagraph().AppendText("NIGHTS");
+            //row0.Cells[0].CellFormat.Borders.LineWidth = 0f;
+            //row0.Cells[0].CellFormat.BackColor = Color.LightGray;
 
 
-            //MailMergeDataTable villaBookingDetailDataSource = new MailMergeDataTable("VillaBookingDetails", villaBookingDetail.VillaBookingDetails);
-            //doc.MailMerge.ExecuteGroup(villaBookingDetailDataSource);
+            row0.Cells[1].AddParagraph().AppendText("VILLA");
+            row0.Cells[2].AddParagraph().AppendText("PRICE PER NIGHT");
+            row0.Cells[3].AddParagraph().AppendText("TOTAL");
+            row0.Cells[3].Width = 80;
+            row0.Cells[1].Width = 220;
+            row0.Cells[0].Width = 80;
 
-            ////Get Villa Details
-            //MailMergeDataTable villaDetailsDataSource = new MailMergeDataTable("VillaDetails", villaBookingDetail.VillaDetails);
-            //doc.MailMerge.ExecuteGroup(villaDetailsDataSource);
-
-            ////Get Villa Payment Details
-            //MailMergeDataTable villaPaymentDetailsDataSource = new MailMergeDataTable("VillaPaymentDetails", villaBookingDetail.VillaPaymentDetails);
-            //doc.MailMerge.ExecuteGroup(villaPaymentDetailsDataSource);
-
-            //// Using Merge events to do conditional formatting during runtime.
-            //doc.MailMerge.MergeField += new MergeFieldEventHandler(MailMerge_MergeField);
-
-            using (DocIORenderer render = new DocIORenderer())
+            WTableRow row1 = table.Rows[1];
+            row1.Cells[0].AddParagraph().AppendText(bookingFromDb.Nights.ToString());
+            row1.Cells[1].AddParagraph().AppendText(bookingFromDb.Villa.Name);
+            row1.Cells[2].AddParagraph().AppendText((bookingFromDb.TotalCost/bookingFromDb.Nights).ToString("c"));
+            row1.Cells[3].AddParagraph().AppendText(bookingFromDb.TotalCost.ToString("c"));
+            row1.Cells[3].Width = 80;
+            row1.Cells[1].Width = 220;
+            row1.Cells[0].Width = 80;
+            if (bookingFromDb.VillaNumber > 0)
             {
-                //Converts Word document into PDF document
-                PdfDocument pdfDocument = render.ConvertToPDF(doc);
-
-                //Saves the PDF document to MemoryStream.
-                MemoryStream stream = new MemoryStream();
-                pdfDocument.Save(stream);
-                stream.Position = 0;
-
-                //Download PDF document in the browser.
-                return File(stream, "application/pdf", "VillaDetails.pdf");
+                WTableRow row2 = table.Rows[2];
+                row2.Cells[1].AddParagraph().AppendText("Villa Number - "+bookingFromDb.VillaNumber.ToString());
+                row2.Cells[3].Width = 80;
+                row2.Cells[1].Width = 220;
+                row2.Cells[0].Width = 80;
             }
+
+            WTableStyle tableStyle = doc.AddTableStyle("CustomStyle") as WTableStyle;
+            tableStyle.TableProperties.RowStripe = 1;
+            tableStyle.TableProperties.ColumnStripe = 2;
+            tableStyle.TableProperties.Paddings.Top = 2;
+            tableStyle.TableProperties.Paddings.Bottom = 1;
+            tableStyle.TableProperties.Paddings.Left = 5.4f;
+            tableStyle.TableProperties.Paddings.Right = 5.4f;
+            table.TableFormat.Paddings.Top = 7f;
+            table.TableFormat.Paddings.Bottom = 7f;
+            table.TableFormat.Borders.Horizontal.LineWidth = 1f;
+
+            ConditionalFormattingStyle firstRowStyle = tableStyle.ConditionalFormattingStyles.Add(ConditionalFormattingType.FirstRow);
+            firstRowStyle.CharacterFormat.Bold = true;
+            firstRowStyle.CharacterFormat.TextColor = Color.FromArgb(255, 255, 255, 255);
+            firstRowStyle.CellProperties.BackColor = Color.Black;
+
+            table.ApplyStyle("CustomStyle");
+
+            part.BodyItems.Add(table);
+
+            doc.Replace("<ADDTABLEHERE>", part, false, false);
+           
+            using DocIORenderer render = new();
+            //Converts Word document into PDF document
+            PdfDocument pdfDocument = render.ConvertToPDF(doc);
+
+            //Saves the PDF document to MemoryStream.
+            MemoryStream stream = new();
+            pdfDocument.Save(stream);
+            stream.Position = 0;
+
+            //Download PDF document in the browser.
+            return File(stream, "application/pdf", "BookingDetails.pdf");
         }
 
        
-        private void MailMerge_MergeField(object sender, MergeFieldEventArgs args)
-        {
-            // Conditionally format data during Merge.
-            if (args.RowIndex % 2 == 0)
-            {
-                args.CharacterFormat.TextColor = Syncfusion.Drawing.Color.DarkBlue;
-            }
-
-        }
-
-
-
+      
 
 
 
