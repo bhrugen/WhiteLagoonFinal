@@ -71,6 +71,10 @@
                             <partial name="_VillaDetail" model="villa" />
                         </div>
                         <div class="modal-footer">
+                             <button asp-action="GeneratePPT" asp-controller="Home" asp-route-id="@villa.Id" type="submit"
+                                class="btn btn-outline-warning">
+                                Generate PPT
+                            </button>
                             <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Close</button>
                         </div>
 
