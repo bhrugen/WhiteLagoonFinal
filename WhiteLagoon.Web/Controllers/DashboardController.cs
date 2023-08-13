@@ -23,75 +23,32 @@ namespace WhiteLagoon.Web.Controllers
         public async Task<IActionResult> GetTotalBookingsChartData()
         {
             RadialBarChartVM dashboardRadialBarChartVM = await _unitOfWork.Dashboard.GetBookingsChartDataAsync();
-
-            var data = new
-            {
-                series = dashboardRadialBarChartVM.Series, //new int[] { 30 },
-                totalCount = dashboardRadialBarChartVM.TotalCount,
-                increaseDecreaseRatio = dashboardRadialBarChartVM.IncreaseDecreaseRatio,
-                hasRatioIncreased = dashboardRadialBarChartVM.HasRatioIncreased,
-                increaseDecreaseAmount = dashboardRadialBarChartVM.IncreaseDecreaseAmount
-            };
-            return Json(data);
+            return Json(dashboardRadialBarChartVM);
         }
         public async Task<IActionResult> GetTotalRevenueChartData()
         {
             RadialBarChartVM dashboardRadialBarChartVM = await _unitOfWork.Dashboard.GetRevenueChartDataAsync();
-
-            var data = new
-            {
-                series = dashboardRadialBarChartVM.Series, //new int[] { 30 },
-                totalCount = dashboardRadialBarChartVM.TotalCount,
-                increaseDecreaseRatio = dashboardRadialBarChartVM.IncreaseDecreaseRatio,
-                hasRatioIncreased = dashboardRadialBarChartVM.HasRatioIncreased,
-                increaseDecreaseAmount = dashboardRadialBarChartVM.IncreaseDecreaseAmount
-            };
-            return Json(data);
+            return Json(dashboardRadialBarChartVM);
         }
 
         public async Task<IActionResult> GetRegisteredUserChartData()
         {
             RadialBarChartVM dashboardRadialBarChartVM = await _unitOfWork.Dashboard.GetRegisteredUserChartDataAsync();
-
-            var data = new
-            {
-                series = dashboardRadialBarChartVM.Series, //new int[] { 30 },
-                totalCount = dashboardRadialBarChartVM.TotalCount,
-                increaseDecreaseRatio = dashboardRadialBarChartVM.IncreaseDecreaseRatio,
-                hasRatioIncreased = dashboardRadialBarChartVM.HasRatioIncreased,
-                increaseDecreaseAmount = dashboardRadialBarChartVM.IncreaseDecreaseAmount
-            };
-            return Json(data);
+            return Json(dashboardRadialBarChartVM);
         }
 
         public async Task<IActionResult> GetMemberAndBookingChartData()
         {
             DashboardLineChartVM dashboardLineChartVM = await _unitOfWork.Dashboard.GetMemberAndBookingChartDataAsync();
 
-            // Retrieve your data and format it as needed
-            var data = new
-            {
-                series = dashboardLineChartVM.ChartData,
-                categories = dashboardLineChartVM.Categories
-            };
-
-            // Manually serialize the data to JSON
-            return Json(data);
+            return Json(dashboardLineChartVM);
         }
 
         public async Task<IActionResult> GetCustomerBookingsPieChartData()
         {
             DashboardPieChartVM dashboardPieChartVM = await _unitOfWork.Dashboard.GetBookingPieChartDataAsync();
 
-            // Retrieve your data and format it as needed
-            var data = new
-            {
-                series = dashboardPieChartVM.Series,
-                labels = dashboardPieChartVM.Labels
-            };
-
-            // Manually serialize the data to JSON
-            return Json(data);
+            return Json(dashboardPieChartVM);
         }
     }
 }

@@ -162,7 +162,7 @@ namespace WhiteLagoon.Web.Controllers
             Booking bookingFromDb = _unitOfWork.Booking.Get(u => u.Id == bookingId, includeProperties: "User,Villa");
             if (bookingFromDb.VillaNumber == 0 && bookingFromDb.Status == SD.StatusApproved)
             {
-                var availableVillaNumbers = AssignAvailableVillaNumberByVilla(bookingFromDb.VillaId, bookingFromDb.CheckInDate);
+                var availableVillaNumbers = AssignAvailableVillaNumberByVilla(bookingFromDb.VillaId);
 
                 bookingFromDb.VillaNumbers = _unitOfWork.VillaNumber.GetAll().Where(m => m.VillaId == bookingFromDb.VillaId
                             && availableVillaNumbers.Any(x => x == m.Villa_Number)).ToList();
@@ -378,9 +378,9 @@ namespace WhiteLagoon.Web.Controllers
             return Json(new { data = objBookings });
         }
 
-        public List<int> AssignAvailableVillaNumberByVilla(int villaId, DateOnly checkInDate)
+        public List<int> AssignAvailableVillaNumberByVilla(int villaId)
         {
-            List<int> availableVillaNumbers = new List<int>();
+            List<int> availableVillaNumbers = new ();
 
             var villaNumbers = _unitOfWork.VillaNumber.GetAll().Where(m => m.VillaId == villaId).ToList();
 

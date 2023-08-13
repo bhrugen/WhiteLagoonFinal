@@ -8,7 +8,7 @@ namespace WhiteLagoon.Domain.SharedModels
 {
     public class DashboardLineChartVM
     {
-        public List<ChartData> ChartData { get; set; }
+        public List<ChartData> Series { get; set; }
         public string[] Categories { get; set; }
     }
 
